@@ -1,0 +1,112 @@
+(play-a-book)
+comment: this produces the main application window
+(always)
+(005) "let*" (012) (002) play-a-book (003) "new" "frame%" (002) "label" (message) (wrap9) ""play-a-book"" ""->"" ""spawn"" ""an"" ""entity"" ""or"" ""retrieve"" ""a"" ""stack""
+                   (002) name (004) "new" "text-field%" (002) "label" ""name"" (002) "parent" play-a-book
+                   (002) size (radio-box)  ""size""
+                                           play-a-book
+                                           (quote) (001) "horizontal" 
+                                           (quote) (006) ""tiny"" ""small"" ""medium"" ""large"" ""giant"" ""huge""
+                                           2
+                   (002) speed (radio-box) ""speed""
+                                           play-a-book
+                                           (quote) (001) "horizontal" 
+                                           (quote) (015) ""1"" ""2"" ""3"" ""4"" ""5"" ""6"" ""7"" ""8"" ""9"" ""10"" ""11"" ""12"" ""13"" ""14"" ""15""
+                                           2
+                   (002) player? (radio-box) ""player?""
+                                             play-a-book
+                                             (quote) (001) "horizontal" 
+                                             (quote) (002) ""yes"" ""no""
+                                             0
+                   (002) button-pane (003) "new" "horizontal-pane%" (002) "parent" play-a-book
+                   (002) score (004) "new" "message%" (002) "label" """" (002) "parent" button-pane
+                   (002) initiative-count (004) "new" "message%" (002) "label" (initiative-in-play) 0 (002) "parent" button-pane                        
+                   (002) help-button (button) ""help"" button-pane help
+                   (002) save-button (button) ""save"" button-pane save
+                   (002) retrieve-button (button) ""retrieve"" button-pane retrieve
+                   (002) spawn-button (button) ""spawn"" button-pane (006) (curry) spawn name size speed player? initiative-count
+             (004) "send" button-pane "change-children" "reverse"                   
+             (004) "send" play-a-book "show" #true
+             (004) "send" score "show" #false
+
+(spawn) name size speed player? initiative-count button event
+comment: spawn an entity
+(always)
+(ZEDspawn) (003) "send" name "get-value"
+           (add1) (003) "send" size "get-selection"
+           (add1) (003) "send" speed "get-selection"
+           (add1) (003) "send" player? "get-selection"
+           initiative-count
+
+(ZEDspawn) name size speed player? initiative-count
+comment: 
+(always)
+(004) "let*" (007) (002) spawn (003) "new" "frame%" 
+                                     (002) "label" (004) "string-append" name (sp) (number->string) speed
+                   (002) button-pane (003) "new" "horizontal-pane%" (002) "parent" spawn
+                   (002) good-button (button) ""good"" button-pane (002) (curry) good initiative-count
+                   (002) poor-button (button) ""poor"" button-pane (002) (curry) poor initiative-count
+                   (002) pass-button (button) ""pass"" button-pane pass
+                   (002) favor-button (button) ""favor"" button-pane favor
+                   (002) reset-button (button) ""reset"" button-pane reset
+             (003) "send" spawn "center"
+             (004) "send" spawn "show" #true
+               
+(good) initiative-count button event
+comment: 
+(always)
+(004) "send" initiative-count "show" #true
+
+(poor) initiative-count button event
+comment: 
+(always)
+(004) "send" initiative-count "show" #false
+
+(pass) button event
+comment: 
+(always)
+3
+
+(favor) button event
+comment: 
+(always)
+4
+
+(reset) button event
+comment: 
+(always)
+(message-box) ""windows"" (message) ("cdr") (001) "get-top-level-windows"
+
+(retrieve) button event
+comment: 
+(always)
+2
+
+(save) button event
+comment: 
+(always)
+3
+
+(help) button event
+comment: 
+(always)
+4
+
+(initiative-in-play) integer
+comment: 
+(always)
+(message) (wrap5) ""initiative"" ""in"" ""play"" ""->"" integer
+
+(button) label parent callback
+comment: takes label, parent and callback -> makes a button 
+(always)
+(005) "new" "button%"  (002) "label" label (002) "parent" parent (002) "callback" callback
+
+(radio-box) label parent style choices selection
+comment: 
+(always)
+(007) "new" "radio-box%" (002) "label" label
+                         (002) "parent" parent
+                         (002) "style" style
+                         (002) "choices" choices
+                         (002) "selection" selection
