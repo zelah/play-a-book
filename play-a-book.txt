@@ -1,5 +1,5 @@
 (play-a-book)
-comment: this produces the main application window
+comment: main window
 (always)
 (005) "let*" (012) (002) play-a-book (003) "new" "frame%" (002) "label" (message) (wrap9) ""play-a-book"" ""->"" ""spawn"" ""an"" ""entity"" ""or"" ""retrieve"" ""a"" ""stack""
                    (002) name (004) "new" "text-field%" (002) "label" ""name"" (002) "parent" play-a-book
