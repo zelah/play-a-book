@@ -1,4 +1,1 @@
-play-a-book
-===========
-
-a role playing game
+This is a role playing game.
