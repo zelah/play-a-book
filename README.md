@@ -1,1 +1,1 @@
-This is a role playing game.
+This is a computer assisted role playing widget.
