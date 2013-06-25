@@ -1,7 +1,7 @@
 (play-a-book)
 comment: main window
 (always)
-(005) "let*" (012) (002) play-a-book (003) "new" "frame%" (002) "label" (message) (wrap9) ""play-a-book"" ""->"" ""spawn"" ""an"" ""entity"" ""or"" ""retrieve"" ""a"" ""stack""
+(005) "let*" (013) (002) play-a-book (003) "new" "frame%" (002) "label" (message) (wrap9) ""play-a-book"" ""->"" ""spawn"" ""an"" ""entity"" ""or"" ""retrieve"" ""a"" ""stack""
                    (002) name (004) "new" "text-field%" (002) "label" ""name"" (002) "parent" play-a-book
                    (002) size (radio-box)  ""size""
                                            play-a-book
@@ -20,7 +20,8 @@ comment: main window
                                              0
                    (002) button-pane (003) "new" "horizontal-pane%" (002) "parent" play-a-book
                    (002) score (004) "new" "message%" (002) "label" """" (002) "parent" button-pane
-                   (002) initiative-count (004) "new" "message%" (002) "label" (initiative-in-play) 0 (002) "parent" button-pane                        
+                   (002) initiative-count (004) "new" "message%" (002) "label" ""0"" (002) "parent" button-pane
+                   (002) initiative-label (004) "new" "message%" (002) "label" (message) (wrap4) ""initiative"" ""in"" ""play"" ""->"" (002) "parent" button-pane
                    (002) help-button (button) ""help"" button-pane help
                    (002) save-button (button) ""save"" button-pane save
                    (002) retrieve-button (button) ""retrieve"" button-pane retrieve
@@ -91,11 +92,6 @@ comment:
 comment: 
 (always)
 4
-
-(initiative-in-play) integer
-comment: 
-(always)
-(message) (wrap5) ""initiative"" ""in"" ""play"" ""->"" integer
 
 (button) label parent callback
 comment: takes label, parent and callback -> makes a button 
