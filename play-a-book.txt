@@ -1,67 +1,66 @@
 (play-a-book)
 comment: main window
 (always)
-(005) "let*" (013) (002) play-a-book (003) "new" "frame%" (002) "label" (message) (wrap9) ""play-a-book"" ""->"" ""spawn"" ""an"" ""entity"" ""or"" ""retrieve"" ""a"" ""stack""
-                   (002) name (004) "new" "text-field%" (002) "label" ""name"" (002) "parent" play-a-book
-                   (002) size (radio-box)  ""size""
-                                           play-a-book
-                                           (quote) (001) "horizontal" 
-                                           (quote) (006) ""tiny"" ""small"" ""medium"" ""large"" ""giant"" ""huge""
-                                           2
-                   (002) speed (radio-box) ""speed""
-                                           play-a-book
-                                           (quote) (001) "horizontal" 
-                                           (quote) (015) ""1"" ""2"" ""3"" ""4"" ""5"" ""6"" ""7"" ""8"" ""9"" ""10"" ""11"" ""12"" ""13"" ""14"" ""15""
-                                           2
-                   (002) player? (radio-box) ""player?""
-                                             play-a-book
-                                             (quote) (001) "horizontal" 
-                                             (quote) (002) ""yes"" ""no""
-                                             0
-                   (002) button-pane (003) "new" "horizontal-pane%" (002) "parent" play-a-book
-                   (002) score (004) "new" "message%" (002) "label" """" (002) "parent" button-pane
-                   (002) initiative-count (004) "new" "message%" (002) "label" ""0"" (002) "parent" button-pane
-                   (002) initiative-label (004) "new" "message%" (002) "label" (message) (wrap4) ""initiative"" ""in"" ""play"" ""->"" (002) "parent" button-pane
-                   (002) help-button (button) ""help"" button-pane help
-                   (002) save-button (button) ""save"" button-pane save
-                   (002) retrieve-button (button) ""retrieve"" button-pane retrieve
-                   (002) spawn-button (button) ""spawn"" button-pane (006) (curry) spawn name size speed player? initiative-count
-             (004) "send" button-pane "change-children" "reverse"                   
-             (004) "send" play-a-book "show" #true
-             (004) "send" score "show" #false
+(let*) (012) (002) play-a-book (003) "new" "frame%" (002) "label" (play-a-book-title)
+             (002) name (004) "new" "text-field%" (002) "label" ""name"" (002) "parent" play-a-book
+             (002) size (radio-box)  ""size""
+                                     play-a-book
+                                     (quote) (001) "horizontal" 
+                                     (quote) (006) ""tiny"" ""small"" ""medium"" ""large"" ""giant"" ""huge""
+                                     2
+             (002) speed (radio-box) ""speed""
+                                     play-a-book
+                                     (quote) (001) "horizontal" 
+                                     (quote) (015) ""1"" ""2"" ""3"" ""4"" ""5"" ""6"" ""7"" ""8"" ""9"" ""10"" ""11"" ""12"" ""13"" ""14"" ""15""
+                                     2
+             (002) player? (radio-box) ""player?""
+                                       play-a-book
+                                       (quote) (001) "horizontal" 
+                                       (quote) (002) ""yes"" ""no""
+                                       0
+             (002) button-pane (003) "new" "horizontal-pane%" (002) "parent" play-a-book
+             (002) score (004) "new" "message%" (002) "label" """" (002) "parent" button-pane
+             (002) initiative-in-play (004) "new" "message%" (002) "label" (initiative) 0 (002) "parent" button-pane
+             (002) help-button (button) ""help"" button-pane help
+             (002) save-button (button) ""save"" button-pane save
+             (002) retrieve-button (button) ""retrieve"" button-pane retrieve
+             (002) spawn-button (button) ""spawn"" button-pane (006) (curry) spawn name size speed player? initiative-in-play
+       (se) (004) "send" button-pane "change-children" "reverse"                   
+       (se) (004) "send" play-a-book "show" #true
+            (004) "send" score "show" #false
 
-(spawn) name size speed player? initiative-count button event
+(spawn) name size speed player? initiative-in-play button event
 comment: spawn an entity
 (always)
 (ZEDspawn) (003) "send" name "get-value"
            (add1) (003) "send" size "get-selection"
            (add1) (003) "send" speed "get-selection"
            (add1) (003) "send" player? "get-selection"
-           initiative-count
+           initiative-in-play
 
-(ZEDspawn) name size speed player? initiative-count
+(ZEDspawn) name size speed player? initiative-in-play
 comment: 
 (always)
-(004) "let*" (007) (002) spawn (003) "new" "frame%" 
-                                     (002) "label" (004) "string-append" name (sp) (number->string) speed
-                   (002) button-pane (003) "new" "horizontal-pane%" (002) "parent" spawn
-                   (002) good-button (button) ""good"" button-pane (002) (curry) good initiative-count
-                   (002) poor-button (button) ""poor"" button-pane (002) (curry) poor initiative-count
-                   (002) pass-button (button) ""pass"" button-pane pass
-                   (002) favor-button (button) ""favor"" button-pane favor
-                   (002) reset-button (button) ""reset"" button-pane reset
-             (003) "send" spawn "center"
-             (004) "send" spawn "show" #true
+(let*) (007) (002) spawn (003) "new" "frame%" 
+                               (002) "label" (004) "string-append" name (sp) (number->string) speed
+             (002) button-pane (003) "new" "horizontal-pane%" (002) "parent" spawn
+             (002) good-button (button) ""good"" button-pane (002) (curry) good initiative-in-play
+             (002) poor-button (button) ""poor"" button-pane (002) (curry) poor initiative-in-play
+             (002) pass-button (button) ""pass"" button-pane pass
+             (002) favor-button (button) ""favor"" button-pane favor
+             (002) reset-button (button) ""reset"" button-pane reset
+       (se) (003) "send" spawn "center"
+            (004) "send" spawn "show" #true
                
-(good) initiative-count button event
+(good) initiative-in-play button event
 comment: 
 (always)
-(004) "send" initiative-count "show" #true
+(message-box) ""number"" (number->string) (extract-number) (003) "send" initiative-in-play "get-label"
 
-(poor) initiative-count button event
+(poor) initiative-in-play button event
 comment: 
 (always)
-(004) "send" initiative-count "show" #false
+(004) "send" initiative-in-play "show" #false
 
 (pass) button event
 comment: 
@@ -76,7 +75,7 @@ comment:
 (reset) button event
 comment: 
 (always)
-(message-box) ""windows"" (message) ("cdr") (001) "get-top-level-windows"
+(message-box) ""windows"" (message) (mp) label (fi) spawn? (001) "get-top-level-windows"
 
 (retrieve) button event
 comment: 
@@ -106,3 +105,147 @@ comment:
                          (002) "style" style
                          (002) "choices" choices
                          (002) "selection" selection
+                         
+(initiative) integer
+comment: 
+(always)
+(message) (wrap5) ""initiative"" ""in"" ""play"" ""->"" integer
+
+(extract-number) string
+comment: 
+(always)
+(string->number) (list->string) (reverse) (number-prefix) (reverse) (string->list) string
+
+(number-prefix) characters
+comment: 
+(null?) characters
+nil
+
+(number-prefix) characters
+comment: 
+(011) "or" (=) (1) characters #0
+           (=) (1) characters #1
+           (=) (1) characters #2
+           (=) (1) characters #3
+           (=) (1) characters #4
+           (=) (1) characters #5
+           (=) (1) characters #6
+           (=) (1) characters #7
+           (=) (1) characters #8
+           (=) (1) characters #9
+(c) (1) characters (number-prefix) (!) characters
+
+(number-prefix) characters
+comment: 
+(always)
+nil
+
+(string->number) string
+comment: 
+(always)
+(002) "string->number" string
+
+(d4)
+comment: 
+(always)
+(random) (current-random-number-generator) 4
+
+(d6)
+comment: 
+(always)
+(random) (current-random-number-generator) 6
+
+(d8)
+comment: 
+(always)
+(random) (current-random-number-generator) 8
+
+(d12)
+comment: 
+(always)
+(random) (current-random-number-generator) 12
+
+(d20)
+comment: 
+(always)
+(random) (current-random-number-generator) 20
+
+(z6) wild
+comment: 
+(always)
+(ZEDz6) wild (d6)
+
+(ZEDz6) wild choice
+comment: 
+(=) choice 1
+(d4)
+
+(ZEDz6) wild choice
+comment: 
+(=) choice 2
+(d6)
+
+(ZEDz6) wild choice
+comment: 
+(=) choice 3
+(d8)
+
+(ZEDz6) wild choice
+comment: 
+(=) choice 4
+(d12)
+
+(ZEDz6) wild choice
+comment: 
+(=) choice 5
+(d20)
+
+(ZEDz6) wild choice
+comment: 
+(=) choice 6
+(001) wild
+
+(roll-player) wild
+comment: 
+(always)
+(z6) wild
+
+(roll-enemy) wild
+comment: 
+(always)
+(minimum) (minimum) (z6) wild (z6) wild (z6) wild
+
+(gain-initiative) speed
+comment: 
+(always)
+(random) (current-random-number-generator) speed
+
+(label) frame
+comment: 
+(always)
+(003) "send" frame "get-label"
+
+(minimum) number1 number2
+comment: 
+(always)
+(003) "min" number1 number2
+
+(spawn?) frame
+comment: 
+(always)
+(not) (equal?) (003) "send" frame "get-label" (play-a-book-title)
+
+(play-a-book-title)
+comment: 
+(always)
+(message) (wrap9) ""play-a-book"" ""->"" ""spawn"" ""an"" ""entity"" ""or"" ""retrieve"" ""a"" ""stack""
+
+(initiative-count) integer
+comment: 
+(>) integer 59
+1
+
+(initiative-count) integer
+comment: 
+(positive?) integer
+(add1) integer
